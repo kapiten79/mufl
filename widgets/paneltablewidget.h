@@ -7,6 +7,7 @@
 
 enum ColumnType {
     name,
+    type,
     size,
     date,
     rights,

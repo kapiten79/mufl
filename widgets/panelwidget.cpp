@@ -106,27 +106,30 @@ void PanelWidget::setCurrPath(const QString& path, const QString& pathToSet)
     for(int i=0; i<currPath->entryInfoList().count(); i++) {
         QFileInfo currEntry = currPath->entryInfoList()[i];
         fileTable->setRowCount(fileTable->rowCount()+1);
-        fileTable->setItem(i,0,new QTableWidgetItem(currEntry.fileName()));
+        fileTable->setItem(i,ColumnType::name,new QTableWidgetItem(currEntry.fileName()));
         if (currEntry.fileName() == pathToSet)
-            defaultSelectedItem = fileTable->item(i,0);
+            defaultSelectedItem = fileTable->item(i,ColumnType::name);
         if (currEntry.isFile()) {
-            fileTable->setItem(i,1,new QTableWidgetItem(QString::number(currEntry.size())));
-            fileTable->setItem(i,3,new QTableWidgetItem(getRightsStringFile(currEntry)));
+            fileTable->setItem(i,ColumnType::type,new QTableWidgetItem("file"));
+            fileTable->setItem(i,ColumnType::size,new QTableWidgetItem(QString::number(currEntry.size())));
+            fileTable->setItem(i,ColumnType::rights,new QTableWidgetItem(getRightsStringFile(currEntry)));
         }
         else {
-            fileTable->setItem(i,1,new QTableWidgetItem("DIR"));
-            fileTable->setItem(i,3,new QTableWidgetItem(getRightsStringPath(currEntry)));
+            fileTable->setItem(i,ColumnType::size,new QTableWidgetItem(QString::number(currEntry.size())));
+            fileTable->setItem(i,ColumnType::type,new QTableWidgetItem("DIR"));
+            fileTable->setItem(i,ColumnType::rights,new QTableWidgetItem(getRightsStringPath(currEntry)));
         }
-        fileTable->setItem(i,2,new QTableWidgetItem(currEntry.metadataChangeTime().toString("hh:mm:ss dd.MM.yy")));
-        fileTable->setItem(i,4,new QTableWidgetItem(currEntry.owner()));
+        fileTable->setItem(i,ColumnType::date,new QTableWidgetItem(currEntry.metadataChangeTime().toString("hh:mm:ss dd.MM.yy")));
+        fileTable->setItem(i,ColumnType::owner,new QTableWidgetItem(currEntry.owner()));
 
-        fileTable->item(i,1)->setFlags(Qt::NoItemFlags);
-        fileTable->item(i,2)->setFlags(Qt::NoItemFlags);
-        fileTable->item(i,3)->setFlags(Qt::NoItemFlags);
-        fileTable->item(i,4)->setFlags(Qt::NoItemFlags);
+        fileTable->item(i,ColumnType::type)->setFlags(Qt::NoItemFlags);
+        fileTable->item(i,ColumnType::size)->setFlags(Qt::NoItemFlags);
+        fileTable->item(i,ColumnType::date)->setFlags(Qt::NoItemFlags);
+        fileTable->item(i,ColumnType::rights)->setFlags(Qt::NoItemFlags);
+        fileTable->item(i,ColumnType::owner)->setFlags(Qt::NoItemFlags);
     }
-
-    fileTable->sortByColumn(1,Qt::DescendingOrder);
+    fileTable->sortByColumn(ColumnType::name,Qt::AscendingOrder);
+    fileTable->sortByColumn(ColumnType::type,Qt::AscendingOrder);
     if (defaultSelectedItem != nullptr)
         fileTable->setCurrentItem(defaultSelectedItem);
     else
@@ -183,8 +186,9 @@ void PanelWidget::createTable()
     fileTable->verticalHeader()->setVisible(false);
 
     currentPathLayout->addWidget(fileTable);
-    fileTable->setColumnCount(5);
+    fileTable->setColumnCount(6);
     fileTable->setHorizontalHeaderItem(ColumnType::name,new QTableWidgetItem(tr("Файл")))      ;
+    fileTable->setHorizontalHeaderItem(ColumnType::type,new QTableWidgetItem(tr("Тип")))       ;
     fileTable->setHorizontalHeaderItem(ColumnType::size,new QTableWidgetItem(tr("Размер")))    ;
     fileTable->setHorizontalHeaderItem(ColumnType::date,new QTableWidgetItem(tr("Дата")))      ;
     fileTable->setHorizontalHeaderItem(ColumnType::rights,new QTableWidgetItem(tr("Права")))   ;
