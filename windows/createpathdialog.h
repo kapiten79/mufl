@@ -19,8 +19,8 @@ private:
     QLineEdit addressLine;
     QGridLayout mainLayout;
 
-    QPushButton *createButton;
-    QPushButton *cancelButton;
+    QPushButton *createButton{};
+    QPushButton *cancelButton{};
 signals:
     void pathCreate(QString pathName, bool pathCreateFlag = true);
 

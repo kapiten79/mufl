@@ -26,23 +26,17 @@ void ProcessCopyFile::copyFile(int index)
     qint64 nCopySize = QFileInfo(fileCpy).size();
      qint64 size = 0;
      double divider = static_cast<double>(nCopySize)/5;
-     if(destCpy.exists())
-     {
+     if(destCpy.exists()) {
          destCpy.remove();
      }
-     if(!destCpy.open(QIODevice::ReadWrite))
-     {
+     if(!destCpy.open(QIODevice::ReadWrite)) {
          emit report("Can't create file");
      }
-     if(!fileCpy.open(QIODevice::ReadWrite))
-     {
+     if(!fileCpy.open(QIODevice::ReadWrite)) {
          emit report("Can't read file");
      }
-     while(nCopySize > size)
-     {
-         
-         if(destCpy.write(fileCpy.read(size)))
-         {
+     while(nCopySize > size) {
+         if(destCpy.write(fileCpy.read(size))) {
              emit report(QString::number(size/divider));
          }
          size += divider;
@@ -52,13 +46,12 @@ void ProcessCopyFile::copyFile(int index)
          size = size - nCopySize;
          destCpy.write(fileCpy.read(size));
          destCpy.close();
-     }else{
+     } else {
          destCpy.close();
      }
      if (deleteSource)
          fileCpy.remove();
      fileCpy.close();
-
 }
 
 void ProcessCopyFile::recursiveCopyPath(const QString& subPath)
@@ -67,17 +60,15 @@ void ProcessCopyFile::recursiveCopyPath(const QString& subPath)
     QDir::setCurrent(subPath);
     QDir currDir;
     QStringList fileList = currDir.entryList();
-    for(int i=2; i<fileList.count(); i++)
-    {
-        if (QFileInfo(QDir::currentPath()+"/"+fileList[i]).isFile())
-        {
-            QString currFileFullAddress = QDir::currentPath()+"/"+fileList[i];
+
+    for(const auto &currFile : fileList) {
+        if (QFileInfo(QDir::currentPath()+"/"+currFile).isFile()) {
+            QString currFileFullAddress = QDir::currentPath()+"/"+currFile;
             fullAddressFileList << currFileFullAddress.right(currFileFullAddress.length() - mainPathLen);
         }
-        else
-        {
-            pathList << QDir::currentPath()+"/"+fileList[i];
-            const QString newSubPath = QDir::currentPath()+"/"+fileList[i];
+        else {
+            pathList << QDir::currentPath()+"/"+currFile;
+            const QString newSubPath = QDir::currentPath()+"/"+currFile;
             recursiveCopyPath(newSubPath);
         }
     }
@@ -89,27 +80,22 @@ void ProcessCopyFile::startCopy()
     fullAddressFileList.clear();
     pathList.clear();
     mainPathLen = QDir::currentPath().length();
-    for(int i=0; i<fileList.count(); i++)
-    {
-        if (QFileInfo(QDir::currentPath()+"/"+fileList[i]).isFile())
-        {
-            QString currFileFullAddress = QDir::currentPath()+"/"+fileList[i];
+
+    for(const auto &currFileName : fileList){
+        if (QFileInfo(QDir::currentPath()+"/"+currFileName).isFile()) {
+            QString currFileFullAddress = QDir::currentPath()+"/"+currFileName;
             fullAddressFileList << currFileFullAddress.right(currFileFullAddress.length() - mainPathLen);
         }
-        else
-        {
-            //QString mainPath = QDir::currentPath();
-            pathList << QDir::currentPath()+"/"+fileList[i];
-            recursiveCopyPath(QDir::currentPath()+"/"+fileList[i]);
+        else {
+            pathList << QDir::currentPath()+"/"+currFileName;
+            recursiveCopyPath(QDir::currentPath()+"/"+currFileName);
         }
     }
 
     /** Создаём структуру копируемых каталогов в целевой папке */
-    for (int i=0; i<pathList.count(); i++)
-    {
-        QString nextPath =  toAddress + pathList[i].right(pathList[i].length() - mainPathLen);
-        if (!QDir(nextPath).exists())
-        {
+    for (const auto& currPath : pathList) {
+        QString nextPath =  toAddress + currPath.right(currPath.length() - mainPathLen);
+        if (!QDir(nextPath).exists()) {
             QDir dir;
             dir.mkdir(nextPath);
         }
@@ -117,15 +103,13 @@ void ProcessCopyFile::startCopy()
 
 
     progressBar->setMaximum(fullAddressFileList.count()*100);
-    for (int i=0; i<fullAddressFileList.count(); i++)
-    {
+    for (int i=0; i<fullAddressFileList.count(); i++) {
         copyFile(i);
     }
 
     if (deleteSource)
     {
-        for (int i=pathList.count()-1; i>=0; i--)
-        {
+        for (int i=pathList.count()-1; i>=0; i--) {
             fromAddress+pathList[i].right(pathList[i].length() - mainPathLen);
             if(deleteSource)
                 QDir().rmdir(fromAddress+pathList[i].right(pathList[i].length() - mainPathLen));

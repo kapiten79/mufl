@@ -21,8 +21,8 @@ private:
     QLabel topic;
     QGridLayout mainLayout;
 
-    QPushButton *createButton;
-    QPushButton *cancelButton;
+    QPushButton *createButton{};
+    QPushButton *cancelButton{};
 
     void removePathRecursive(const QString& rmPath);
 signals:

@@ -2,10 +2,7 @@
 #include <QDir>
 
 CreatePathDialog::CreatePathDialog(QWidget *parent)
-    : QDialog(parent),
-      createButton(nullptr),
-      cancelButton(nullptr)
-
+    : QDialog(parent)
 {
     setFixedHeight(100);
     setFixedWidth(300);

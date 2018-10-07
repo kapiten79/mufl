@@ -14,10 +14,10 @@ PanelTableWidget::PanelTableWidget(QWidget *parent):
  */
 void PanelTableWidget::clearSelectedList()
 {
-    for (int i=0; i<selectedList.count(); i++) {
-        if (findItems(selectedList[i],Qt::MatchFixedString).count() > 0) {
-            findItems(selectedList[i],Qt::MatchFixedString)[0]->setTextColor(QColor(Qt::white));
-            selectedList.removeAt(i);
+    for (const auto& currFile : selectedList) {
+        if (findItems(currFile,Qt::MatchFixedString).count() > 0) {
+            findItems(currFile,Qt::MatchFixedString)[0]->setTextColor(QColor(Qt::white));
+            selectedList.removeOne(currFile);
         }
     }
     selectedList.clear();
@@ -80,9 +80,9 @@ void PanelTableWidget::keyPressEvent(QKeyEvent *event)
     }
     case Qt::Key_Insert:{
         bool isRemoved = false;
-        for (int i = 0; i<selectedList.count(); i++) {
-            if (selectedList[i] == currentItem()->text()) {
-                selectedList.removeAt(i);
+        for (const auto &currFileName : selectedList) {
+            if (currFileName == currentItem()->text()) {
+                selectedList.removeOne(currFileName);
                 currentItem()->setTextColor(QColor(Qt::white));
                 setCurrentItem(item(currentRow()+1,ColumnType::name));
                 isRemoved = true;

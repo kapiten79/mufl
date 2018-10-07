@@ -13,18 +13,15 @@ RemovePathDialog::RemovePathDialog(QWidget *parent):QDialog (parent)
     mainLayout.addWidget(&topic,0,0,1,3);
     createButton = new QPushButton("Удалить");
     connect(createButton, &QPushButton::clicked, [=](){
-        for (int i=0; i<toRemovePathsOrFiles.count(); i++)
-        {
+        for (const auto &currFileName : toRemovePathsOrFiles) {
             QDir currDir;
-            if (QFileInfo(toRemovePathsOrFiles[i]).isDir())
-                removePathRecursive(toRemovePathsOrFiles[i]);
-            else
-            {
-                QFile rmFile(toRemovePathsOrFiles[i]);
+            if (QFileInfo(currFileName).isDir())
+                removePathRecursive(currFileName);
+            else {
+                QFile rmFile(currFileName);
                 rmFile.remove();
             }
         }
-
         emit this->pathOrFileRemoved();
         this->close();
     });
@@ -50,22 +47,17 @@ void RemovePathDialog::removePathRecursive(const QString& rmPath)
 
     QDir::setCurrent(rmPath);
     QFileInfoList filePathList = dir.entryInfoList();
-    for (int i=2; i<filePathList.count(); i++)
-    {
-        if (filePathList[i].isDir())
-        {
-            if (QDir(filePathList[i].absoluteFilePath()).count() > 2)
-            {
-                removePathRecursive(filePathList[i].absoluteFilePath());
+    for (const auto &currPath : filePathList) {
+        if (currPath.isDir()) {
+            if (QDir(currPath.absoluteFilePath()).count() > 2) {
+                removePathRecursive(currPath.absoluteFilePath());
             }
-            else
-            {
-                dir.rmdir(filePathList[i].absoluteFilePath());
+            else {
+                dir.rmdir(currPath.absoluteFilePath());
             }
         }
-        else
-        {
-            QFile rmFile(filePathList[i].absoluteFilePath());
+        else {
+            QFile rmFile(currPath.absoluteFilePath());
             rmFile.remove();
         }
     }

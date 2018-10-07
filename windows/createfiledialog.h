@@ -18,8 +18,8 @@ private:
     QLineEdit addressLine;
     QGridLayout mainLayout;
 
-    QPushButton *createButton;
-    QPushButton *cancelButton;
+    QPushButton *createButton{};
+    QPushButton *cancelButton{};
 signals:
 
 public slots:

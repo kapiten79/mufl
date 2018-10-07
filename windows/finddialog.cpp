@@ -35,30 +35,20 @@ void FindDialog::findFile(const QString& subPath, bool recursiveFlag)
     QDir::setCurrent(subPath);
     QDir dir;
     QFileInfoList entryList = dir.entryInfoList();
-    if (!recursiveFlag)
-    {
-        for (int i=0; i<entryList.count(); i++)
-        {
-            if (entryList[i].fileName() == findMaskLineEdit.text())
-            {
+    if (!recursiveFlag) {
+        for (const auto &currFile : entryList) {
+            if (currFile.fileName() == findMaskLineEdit.text()) {
                 qDebug() << "Нашелся";
             }
         }
-    }
-    else
-    {
-        for (int i=0; i<entryList.count(); i++)
-        {
-            if (entryList[i].isFile())
-            {
-                if (entryList[i].fileName() == findMaskLineEdit.text())
-                {
+    } else {
+        for (const auto &currFile : entryList) {
+            if (currFile.isFile()) {
+                if (currFile.fileName() == findMaskLineEdit.text()) {
                     qDebug() << "Нашелся";
                 }
-            }
-            else
-            {
-                findFile(subPath+"/"+entryList[i].fileName());
+            } else {
+                findFile(subPath+"/"+currFile.fileName());
             }
         }
     }

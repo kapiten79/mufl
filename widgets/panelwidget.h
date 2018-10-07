@@ -33,22 +33,22 @@ public:
     QString             getCurrPath()           {return currPathAddress;}
     PanelTableWidget*   getPanelTableWidget()   {return fileTable;}
 private:
-    QWidget             *currentPath;
-    QGridLayout         *currentPathLayout;
+    QWidget             *currentPath{};
+    QGridLayout         *currentPathLayout{};
 
-    QWidget             *info;
-    QGridLayout         *infoLayout;
+    QWidget             *info{};
+    QGridLayout         *infoLayout{};
 
-    QWidget             *find;
-    QGridLayout         *findLayout;
+    QWidget             *find{};
+    QGridLayout         *findLayout{};
 
-    QWidget             *edit;
-    QGridLayout         *editLayout;
+    QWidget             *edit{};
+    QGridLayout         *editLayout{};
 
-    PanelTableWidget    *fileTable  ;
-    QTreeWidget         *fileTree   ;
-    QDir                *currPath;
-    QString             currPathAddress;
+    PanelTableWidget    *fileTable{}  ;
+    QTreeWidget         *fileTree{}   ;
+    QDir                *currPath{};
+    QString             currPathAddress{};
 
     void createTable();
     void createTree();
@@ -57,7 +57,7 @@ private:
     QString getRightsStringPath(const QFileInfo& pathInfo);
     void openFile(const QString& fileName);
 
-    QString panelSide;
+    QString panelSide{};
 
     QMessageBox openDirErr;
 

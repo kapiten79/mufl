@@ -4,19 +4,7 @@
 /*! Конструктор основного окна*/
 MainWindow::MainWindow(QApplication *a, QWidget *parent)
     : QMainWindow(parent),
-      app(a),
-      leftPanel(nullptr),
-      rightPanel(nullptr),
-      createPathDialog(nullptr),
-      removePathDialog(nullptr),
-      copyFileDialog(nullptr),
-      createFileDialog(nullptr),
-      findFileDialog(nullptr),
-      commandLine(nullptr),
-      centralWidget(nullptr),
-      centralGridLayout(nullptr),
-      helpWidget(nullptr),
-      helpLayout(nullptr)
+      app(a)
 {
     setMinimumHeight(768);
     setMinimumWidth (1280);
@@ -68,9 +56,9 @@ MainWindow::MainWindow(QApplication *a, QWidget *parent)
     centralGridLayout->addWidget(rightPanel,0,1);
     centralGridLayout->addWidget(commandLine,1,0,1,2);
 
-    for (int i=0; i<helpLabelList.count(); i++) {
-        helpLabelList[i]->setAlignment(Qt::AlignHCenter|Qt::AlignTop);
-        helpLayout->addWidget(helpLabelList[i]);
+    for (auto &currLabel : helpLabelList) {
+        currLabel->setAlignment(Qt::AlignHCenter|Qt::AlignTop);
+        helpLayout->addWidget(currLabel);
     }
 
     centralGridLayout->addWidget(helpWidget,2,0,1,2);

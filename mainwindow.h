@@ -26,27 +26,27 @@ private:
 
     QApplication *app;
 
-    PanelWidget     *leftPanel          ;
-    PanelWidget     *rightPanel         ;
+    PanelWidget     *leftPanel{}          ;
+    PanelWidget     *rightPanel{}         ;
 
-    QTableWidget *leftTable;
-    QTableWidget *rightTable;
+    QTableWidget *leftTable{};
+    QTableWidget *rightTable{};
 
-    CreatePathDialog *createPathDialog;
-    RemovePathDialog *removePathDialog;
-    CopyFileDialog   *copyFileDialog;
+    CreatePathDialog *createPathDialog{};
+    RemovePathDialog *removePathDialog{};
+    CopyFileDialog   *copyFileDialog{};
     CreateFileDialog *createFileDialog{};
-    FindDialog       *findFileDialog;
+    FindDialog       *findFileDialog{};
 
-    QLineEdit *commandLine;
+    QLineEdit *commandLine{};
 
-    QWidget     *centralWidget      ;
-    QGridLayout *centralGridLayout  ;
+    QWidget     *centralWidget{}      ;
+    QGridLayout *centralGridLayout{}  ;
 
-    QWidget     *helpWidget;
-    QHBoxLayout *helpLayout;
+    QWidget     *helpWidget{};
+    QHBoxLayout *helpLayout{};
 
-    QList<QLabel*> helpLabelList;
+    QList<QLabel*> helpLabelList{};
 
     void copyFile(QFile fileCpy, QFile destCpy);
     void addConnect();

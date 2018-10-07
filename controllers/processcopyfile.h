@@ -12,16 +12,16 @@ public:
     explicit ProcessCopyFile(QStringList &p_fileList, QString p_fromAddress, QString p_toAddress, QProgressBar *p_progressBar, bool isMoving = false, QObject *parent = nullptr);
 
 private:
-    QProgressBar *progressBar;
-    QStringList fileList;
-    QStringList fullAddressFileList;
-    QStringList pathList;
-    QString fromAddress;
-    QString toAddress;
+    QProgressBar *progressBar{};
+    QStringList fileList{};
+    QStringList fullAddressFileList{};
+    QStringList pathList{};
+    QString fromAddress{};
+    QString toAddress{};
 
-    int mainPathLen;
+    int mainPathLen{};
 
-    bool deleteSource;
+    bool deleteSource{};
 
     void copyFile(int index);
     void recursiveCopyPath(const QString &subPath);

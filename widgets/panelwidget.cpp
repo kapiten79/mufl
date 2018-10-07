@@ -10,17 +10,6 @@
 
 PanelWidget::PanelWidget(ViewType panelType, QString p_panelSide, QWidget *parent)
     : QTabWidget(parent),
-      currentPath(nullptr),
-      currentPathLayout(nullptr),
-      info(nullptr),
-      infoLayout(nullptr),
-      find(nullptr),
-      findLayout(nullptr),
-      edit(nullptr),
-      editLayout(nullptr),
-      fileTable(nullptr),
-      fileTree(nullptr),
-      currPath(nullptr),
       panelSide(std::move(std::move(p_panelSide)))
 {
     try {
